@@ -1,9 +1,9 @@
 CC = g++
 CFLAGS = -std=c++11 -isystem -Wall -g
 
-EXEC_NAME = dula nula
+EXEC_NAME = wordborhood
 
-OBJ_FILES = levenshtein.o automaton.o
+OBJ_FILES = levenshtein.o automaton.o word_automaton.o counting.o
 
 all : $(EXEC_NAME)
 

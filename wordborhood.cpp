@@ -1,6 +1,15 @@
 #include <string>
 #include <iostream>
+
+#include "automaton.h"
 #include "levenshtein.h"
+#include "word_automaton.h"
+#include "counting.h"
+
+using namespace std;
+
+
+
 
 int main (int argc, char *argv[]) {
 	int k = 1;
@@ -27,12 +36,29 @@ int main (int argc, char *argv[]) {
 	k = stoi(argv[2]);
 	string word (argv[1]);
 
-	cout << "Couting the neighborhood of " << word << " with a distance of " << std::to_string(k) << endl;
+	cout << "Create automata" << endl;
+
 	Automaton * dul = dula(k);
 	Automaton * enc = encode(word, k);
 
+	cout << "Couting the neighborhood of " << word << " with a distance of " << to_string(k) << endl;
+	long long count = count_neighbors (dul, enc, k, word.size(), 3);
 
-	delete aut;
+	cout << count << endl;
 
 	return 0;
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
