@@ -15,6 +15,7 @@ int main (int argc, char *argv[]) {
 	int k = 1;
 	bool verbose = false;
 	int alphabet_size = 4;
+	string dula_filename = "";
 
 	// Too few arguments
 	if (argc < 4) {
@@ -22,7 +23,7 @@ int main (int argc, char *argv[]) {
 		cerr << "./wordbourhood <word> <distance> <alphabet size> [options]" << endl;
 		cerr << "Options:" << endl;
 		cerr << "-v: Verbose" << endl;
-		cerr << "-d: path to dula file" << endl;
+		cerr << "-d <path>: path to dula file" << endl;
 		return -1;
 	}
 
@@ -35,17 +36,27 @@ int main (int argc, char *argv[]) {
 
 		if (arg[1] == 'v' && arg[2] == '\0')
 			verbose = true;
+		else if (arg[1] == 'd' && arg[2] == '\0') {
+			dula_filename = argv[++i];
+		}
 	}
 
 	k = stoi(argv[2]);
 	string word (argv[1]);
 	alphabet_size = stoi(argv[3]);
 
-	if (verbose)
-		cout << "Create automata" << endl;
-
-	Automaton * dul = dula(k);
 	Automaton * enc = encode(word, k);
+	Automaton * dul = NULL;
+
+	if (dula_filename.size() == 0) {
+		if (verbose)
+			cout << "Create dula automaton (you sould use the -d argument to load it from a file)" << endl;
+		dul = dula(k);
+	} else {
+		if (verbose)
+			cout << "Load the file " << dula_filename << endl;
+		dul = loadDulaFromFsm (dula_filename, k);
+	}
 
 	if (verbose)
 		cout << "Couting the neighborhood of " << word << " with a distance of " << to_string(k) << endl;

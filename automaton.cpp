@@ -168,6 +168,68 @@ void saveAutomaton (Automaton * aut, const string & filename) {
 	file.close();
 };
 
+
+Automaton * loadDulaFromFsm (const string & filename, const int k) {
+	ifstream file;
+	file.open (filename);
+	// Existence test
+	if (file.fail()) {
+		cerr << "Impossible to read " << filename << endl;
+		exit(1);
+	}
+
+	Automaton * aut = new Automaton();
+	string word;
+
+	do {
+		file >> word;
+	} while (word != "---");
+
+	int idx = 0;
+	while (true) {
+		file >> word;
+
+		if (word == "---")
+			break;
+
+		else if (word == "T") {
+			DulaState * ds = new DulaState(idx);
+			aut->states[idx] = ds;
+			idx++;
+
+		} else {
+			cerr << "Wrong fsm format" << endl;
+			exit(1);
+		}
+	}
+	
+	int first, second;
+	string transition;
+	while (true) {
+		file >> first >> second >> transition;
+		if (!file)
+			break;
+
+		// Remove the character "
+		transition.erase(transition.begin());
+		transition.erase(transition.end()-1);
+
+		if (transition.size() != 2*k + 1) {
+			cerr << "The file " << filename << " does not contain the dula for size " << k << endl;
+			cerr << "The transitions should contain exactly " << (2*k+1) << " bits" << endl;
+			exit(1);
+		}
+
+		// Add the transition
+		aut->states[first]->addTransition(aut->states[second], transition);
+	}
+
+	return aut;
+}
+
+
+
+
 void graphVizOutput (Automaton * aut, const string & filename) {
 	ofstream file;
 	file.open (filename);

@@ -66,6 +66,7 @@ public:
 };
 
 void saveAutomaton (Automaton * aut, const string & filename);
+Automaton * loadDulaFromFsm (const string & filename, const int k);
 void saveAutomatonAsFst (Automaton * aut, const string & filename, int wordSize);
 void graphVizOutput (Automaton * aut, const string & filename);
 
