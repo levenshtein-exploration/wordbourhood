@@ -21,7 +21,8 @@ int main (int argc, char *argv[]) {
 		cerr << "Wrong arguments. The command line must be like:" << endl;
 		cerr << "./wordbourhood <word> <distance> <alphabet size> [options]" << endl;
 		cerr << "Options:" << endl;
-		cerr << "-v : Verbose" << endl;
+		cerr << "-v: Verbose" << endl;
+		cerr << "-d: path to dula file" << endl;
 		return -1;
 	}
 

@@ -3,10 +3,10 @@
 #include <vector>
 #include <string>
 
+using namespace std;
+
 #ifndef AUT_H
 #define AUT_H
-
-using namespace std;
 
 class State {
 public:
@@ -69,6 +69,5 @@ void saveAutomaton (Automaton * aut, const string & filename);
 void saveAutomatonAsFst (Automaton * aut, const string & filename, int wordSize);
 void graphVizOutput (Automaton * aut, const string & filename);
 
+
 #endif
-
-

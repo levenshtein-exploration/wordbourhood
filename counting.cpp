@@ -75,13 +75,7 @@ long long count_neighbors (Automaton * dula, Automaton * encode, int k, int w_si
 				string & transition = state.word->transitions[0];
 				DoubleState next = get_next_state(state, transition);
 
-				// Verify if the state is already in the set
-				auto it = next_states.find(next);
-				if (it != next_states.end())
-					next.count += (*it).count;
-
-				// Add the new state in the set
-				next_states.insert(next);
+				insert_state (next, next_states);
 
 			} else {
 				int nbZero = alphabet_size;

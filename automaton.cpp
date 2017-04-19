@@ -15,6 +15,7 @@ State::State() {
 	this->_idx = _next_idx++;
 	this->final = false;
 };
+
 State::~State() {};
 
 void State::addTransition (State * state, string transition) {
@@ -45,6 +46,22 @@ State * State::getNext (string transition) {
 
 	return NULL;
 };
+
+State * DulaState::getNext (string transition) {
+	for (int idx=0 ; idx<this->transitions.size() ; idx++) {
+		// Transform meta trasitions in normal transitions
+		string local_trans = this->transitions[idx];
+		for (int idx=0 ; idx<local_trans.size() ; idx++)
+			if (local_trans[idx] != '0' && local_trans[idx] != '1')
+				local_trans[idx] = transition[idx];
+
+		// Comparison
+		if (transition.compare(local_trans) == 0)
+			return this->accessibleStates[idx];
+	}
+
+	return NULL;
+}
 
 
 
@@ -114,23 +131,6 @@ string DulaState::getName () {
 };
 
 
-State * DulaState::getNext (string transition) {
-	for (int idx=0 ; idx<this->transitions.size() ; idx++) {
-		// Transform meta trasitions in normal transitions
-		string local_trans = this->transitions[idx];
-		for (int idx=0 ; idx<local_trans.size() ; idx++)
-			if (local_trans[idx] != '0' && local_trans[idx] != '1')
-				local_trans[idx] = transition[idx];
-
-		// Comparison
-		if (transition.compare(local_trans) == 0)
-			return this->accessibleStates[idx];
-	}
-
-	return NULL;
-}
-
-
 
 
 
@@ -161,6 +161,7 @@ void saveAutomaton (Automaton * aut, const string & filename) {
 
 		for (int idx=0 ; idx<st->accessibleStates.size() ; idx++) {
 			file << st->getName() << ' ' << st->accessibleStates[idx]->getName() << ' ';
+			file << "\"" << st->transitions[idx] << "\"" << endl;
 			//cout << st->transitions[idx] << endl;
 		}
 	}
