@@ -36,12 +36,14 @@ int main (int argc, char *argv[]) {
 	k = stoi(argv[2]);
 	string word (argv[1]);
 
-	cout << "Create automata" << endl;
+	if (verbose)
+		cout << "Create automata" << endl;
 
 	Automaton * dul = dula(k);
 	Automaton * enc = encode(word, k);
 
-	cout << "Couting the neighborhood of " << word << " with a distance of " << to_string(k) << endl;
+	if (verbose)
+		cout << "Couting the neighborhood of " << word << " with a distance of " << to_string(k) << endl;
 	long long count = count_neighbors (dul, enc, k, word.size(), 3);
 
 	cout << count << endl;

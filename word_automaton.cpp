@@ -66,7 +66,7 @@ Automaton * encode (string & word, int k) {
 		}
 	}
 
-	// Create $ states
+	// Create $ states (use the unused final property)
 	int offset = 0;
 	int nb_$states = 2*k;
 	if (k > w_size) {
@@ -75,8 +75,9 @@ Automaton * encode (string & word, int k) {
 	}
 
 	for (int i=0 ; i<nb_$states ; i++) {
-		aut->states[aut->states.size()] = new State();
-		aut->states[aut->states.size()-1].final = true;
+		State * st = new State();
+		st->final = true;
+		aut->states[aut->states.size()] = st;
 	}
 
 	// Create $ transitions

@@ -38,7 +38,6 @@ void insert_state (DoubleState & state, unordered_set<DoubleState> & set) {
 		auto it = set.find(state);
 		if (it != set.end()) {
 			state.count += (*it).count;
-			cout << "from " << (*it).count << " to " << state.count << endl;
 			set.erase(it);
 		}
 
@@ -65,12 +64,11 @@ long long count_neighbors (Automaton * dula, Automaton * encode, int k, int w_si
 
 	// Travel all along the word and errors
 	for (int idx=0 ; idx<w_size+k ; idx++) {
-		cout << "--- New step ---" << endl << endl;
 		unordered_set<DoubleState> next_states;
 
 		// From each previous dual states created
 		for (auto & state : previous_states) {
-			bool is$state = state.word->transitions.size() == 1;
+			bool is$state = state.word->final;
 
 
 			if (is$state) {
@@ -87,26 +85,19 @@ long long count_neighbors (Automaton * dula, Automaton * encode, int k, int w_si
 
 			} else {
 				int nbZero = alphabet_size;
-				if (idx == w_size+k-1)
-					nbZero--;
 
 				// Basic transitions
 				for (string & transition : state.word->transitions) {
 					if (transition == zero)
 						continue;
-					cout << transition << endl;
 
 					DoubleState next = get_next_state (state, transition);
 					insert_state (next, next_states);
 
-					if (next.dula != NULL)
-						cout << state.toString() << ": " << transition << " -> " << next.toString() << endl;
-
 					// Decrement the numbers of zero transitions if the transition was not made
 					// by a $ consumption
-					if (next.word->transitions.size() != 1) {
+					if (!next.word->final) {
 						nbZero--;
-						cout << "Zero " << nbZero << endl;
 					}
 				}
 
@@ -114,17 +105,19 @@ long long count_neighbors (Automaton * dula, Automaton * encode, int k, int w_si
 				DoubleState next = get_next_state (state, zero);
 				next.count *= nbZero;
 				insert_state (next, next_states);
-				if (next.dula != NULL) {
-					cout << state.toString() << ": " << zero << " -> " << next.toString() << endl;
-				}
-				cout << state.toString() << ": Z = " << nbZero << endl << endl;
 			}
 		}
 
 		previous_states = next_states;
 	}
 
-	return 0;
+	// Final count
+	long long nbNeighbors = 0;
+	for (const DoubleState & state : previous_states) {
+		nbNeighbors += state.count;
+	}
+
+	return nbNeighbors;
 }
 
 
