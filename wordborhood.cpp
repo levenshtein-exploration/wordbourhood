@@ -107,6 +107,8 @@ int main (int argc, char *argv[]) {
 		// Analysis
 		long long count = count_neighbors (dul, enc, k, word.size(), alphabet_size);
 		cout << word << "\t" << count << endl;
+
+		delete enc;
 	}
 
 	return 0;
