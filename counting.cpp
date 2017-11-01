@@ -25,6 +25,12 @@ bool DoubleState::operator==(const DoubleState& state) const{
 void normalize (Automaton * automaton);
 
 
+bool print = false;
+void print_automaton (bool val) {
+	print = val;
+}
+
+
 DoubleState get_next_state (const DoubleState & state, string transition) {
 	State * next_word_state = state.word->getNext(transition);
 	DulaState * next_dula_state = (DulaState *)state.dula->getNext(transition);
@@ -45,7 +51,6 @@ void insert_state (DoubleState & state, unordered_set<DoubleState> & set) {
 		set.insert(state);
 	}
 }
-
 
 long long count_neighbors (Automaton * dula, Automaton * encode, int k, int w_size, int alphabet_size) {
 	// Normalize the _idx of the automatons for the double state hash code
@@ -77,6 +82,11 @@ long long count_neighbors (Automaton * dula, Automaton * encode, int k, int w_si
 
 				insert_state (next, next_states);
 
+				if (print) {
+					cout << "1!" << endl;
+					cout << state.toString() << "\t" << transition << "\t" << next.toString() << endl;
+				}
+
 			} else {
 				int nbZero = alphabet_size;
 
@@ -87,6 +97,11 @@ long long count_neighbors (Automaton * dula, Automaton * encode, int k, int w_si
 
 					DoubleState next = get_next_state (state, transition);
 					insert_state (next, next_states);
+
+					if (print && next.dula != NULL) {
+						cout << "2!" << endl;
+						cout << state.toString() << "\t" << transition << "\t" << next.toString() << endl;
+					}
 
 					// Decrement the numbers of zero transitions if the transition was not made
 					// by a $ consumption
@@ -99,6 +114,10 @@ long long count_neighbors (Automaton * dula, Automaton * encode, int k, int w_si
 				DoubleState next = get_next_state (state, zero);
 				next.count *= nbZero;
 				insert_state (next, next_states);
+				if (print) {
+					cout << "3!" << endl;
+					cout << state.toString() << "\t" << zero << "\t" << next.toString() << endl;
+				}
 			}
 		}
 

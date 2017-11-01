@@ -29,5 +29,7 @@ namespace std {
 }
 
 
+
+void print_automaton (bool value);
 long long count_neighbors (Automaton * dula, Automaton * encode, int k, int w_size, int alphabet_size);
 

@@ -12,12 +12,12 @@ using namespace std;
 
 void print_help () {
 	cout << "The command line must be like: ./wordbourhood [options] [words...]";
-	cout << "-alphabet-size, -a: alphabet size [default 4]" << endl;
-	cout << "-dula, -d: path to dula file in fsm format" << endl;
-	cout << "-help, -h: help" << endl;
-	cout << "-k: number of allowed errors" << endl;
-	cout << "-verbose, -v: verbose" << endl;
-	cout << "-words, -w: words filename (if you want to submit a long wordlist)" << endl;
+	cout << "-alphabet-size, -a:\talphabet size [default 4]" << endl;
+	cout << "-dula, -d:\tpath to dula file in fsm format" << endl;
+	cout << "-help, -h:\thelp" << endl;
+	cout << "-k:\tnumber of allowed errors [default 1]" << endl;
+	cout << "-verbose, -v:\tverbose" << endl;
+	cout << "-words, -w:\twords filename (if you want to submit a long wordlist)" << endl;
 }
 
 
@@ -101,8 +101,10 @@ int main (int argc, char *argv[]) {
 		// Encode
 		Automaton * enc = encode(word, k);
 
-		if (verbose)
+		if (verbose) {
 			cout << "Couting the neighborhood of " << word << " with a distance of " << to_string(k) << endl;
+			print_automaton (true);
+		}
 
 		// Analysis
 		long long count = count_neighbors (dul, enc, k, word.size(), alphabet_size);
