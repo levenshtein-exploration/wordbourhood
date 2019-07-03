@@ -1,1 +1,1 @@
-# Universal Levenshtein Automaton (ula)
+# Wordborhood
