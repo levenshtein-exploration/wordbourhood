@@ -1,5 +1,5 @@
 CC = g++
-CFLAGS = -std=c++11 -isystem -Wall -g
+CFLAGS = -std=c++11 -isystem -Wall
 
 EXEC_NAME = wordborhood
 
